@@ -5,7 +5,7 @@
   "copyright": "Copyright © 2025 AI助手",
   "asar": true,
   "directories": {
-    "output": "release/${version}"
+    "output": "release/${version}/${os}"
   },
   "files": [
     "dist-electron",
@@ -13,7 +13,7 @@
   ],
   "mac": {
     "icon": "build/icons/icon.icns",
-    "artifactName": "${productName}_${version}.${ext}",
+    "artifactName": "${productName}_${version}_${os}_${arch}.${ext}",
     "target": [
       "dmg",
       "zip"
@@ -29,7 +29,7 @@
         ]
       }
     ],
-    "artifactName": "${productName}_${version}.${ext}"
+    "artifactName": "${productName}_${version}_${os}_${arch}.${ext}"
   },
   "nsis": {
     "oneClick": false,
