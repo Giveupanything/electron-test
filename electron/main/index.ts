@@ -8,6 +8,7 @@ import { update } from './update'
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 let tray: Tray | null = null
+const gotTheLock = app.requestSingleInstanceLock()  // 申请单实例锁
 
 // The built directory structure
 //
@@ -86,7 +87,7 @@ async function createWindow() {
   win.on('close', (e) => {
     e.preventDefault()
     win?.hide()
-    if(!tray) createTray()
+    if (!tray) createTray()
   })
 
   // Auto update
@@ -158,13 +159,19 @@ app.on('window-all-closed', () => {
   // if (process.platform !== 'darwin') app.quit()
 })
 
-app.on('second-instance', () => {
-  if (win) {
-    // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore()
-    win.focus()
-  }
-})
+if (!gotTheLock) {
+  app.quit() // 如果申请失败，则退出应用
+  process.exit(0)
+} else {
+  app.on('second-instance', () => {
+    if (win) {
+      // Focus on the main window if the user tried to open another
+      if (win.isMinimized()) win.restore()
+      win.show()
+      win.focus()
+    }
+  })
+}
 
 app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows()
