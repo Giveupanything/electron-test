@@ -1,3 +1,10 @@
+/*
+ * @Author: qilin
+ * @Date: 2025-04-07 14:11:43
+ * @LastEditors: qilin
+ * @LastEditTime: 2025-04-07 16:25:03
+ * @description: 乘风破浪
+ */
 import { useState } from 'react'
 import UpdateElectron from '@/components/update'
 import logoVite from './assets/logo-vite.svg'
@@ -8,7 +15,8 @@ function App() {
   const [count, setCount] = useState(0)
   return (
     <div className='App'>
-      <div className='logo-box'>
+      JokerMax
+      {/* <div className='logo-box'>
         <a href='https://github.com/electron-vite/electron-vite-react' target='_blank'>
           <img src={logoVite} className='logo vite' alt='Electron + Vite logo' />
           <img src={logoElectron} className='logo electron' alt='Electron + Vite logo' />
@@ -28,7 +36,7 @@ function App() {
       </p>
       <div className='flex-center'>
         Place static files into the<code>/public</code> folder <img style={{ width: '5em' }} src='./node.svg' alt='Node logo' />
-      </div>
+      </div> */}
 
       <UpdateElectron />
     </div>

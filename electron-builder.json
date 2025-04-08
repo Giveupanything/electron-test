@@ -1,6 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "ai-assistant",
+  "productName": "AI助手",
+  "copyright": "Copyright © 2025 AI助手",
   "asar": true,
   "directories": {
     "output": "release/${version}"
@@ -10,6 +12,7 @@
     "dist"
   ],
   "mac": {
+    "icon": "build/icons/icon.icns",
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
       "dmg",
@@ -17,6 +20,7 @@
     ]
   },
   "win": {
+    "icon": "build/icons/icon.ico",
     "target": [
       {
         "target": "nsis",
@@ -31,7 +35,13 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "AI助手",
+    "installerIcon": "build/icons/icon.ico",
+    "uninstallerIcon": "build/icons/icon.ico",
+    "installerHeaderIcon": "build/icons/icon.ico"
   },
   "publish": {
     "provider": "generic",
