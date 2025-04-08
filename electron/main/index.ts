@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, Menu, Tray } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -7,6 +7,7 @@ import { update } from './update'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+let tray: Tray | null = null
 
 // The built directory structure
 //
@@ -82,15 +83,79 @@ async function createWindow() {
     return { action: 'deny' }
   })
 
+  win.on('close', (e) => {
+    e.preventDefault()
+    win?.hide()
+    if(!tray) createTray()
+  })
+
   // Auto update
   update(win)
 }
 
-app.whenReady().then(createWindow)
+async function createTray() {
+  const trayIcon = path.join(process.env.VITE_PUBLIC, 'favicon.ico')
+  tray = new Tray(trayIcon)
+
+  tray.on('click', () => {
+    if (win) {
+      win.isMinimized() && win.restore()
+      win.show()
+    } else {
+      createWindow()
+    }
+  })
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: '打开AI助手', click: () => {
+        if (win) {
+          win.isMinimized() && win.restore()
+          win.show()
+        } else {
+          createWindow()
+        }
+      }
+    },
+    {
+      label: '退出AI助手', click: () => {
+        tray?.destroy()
+        app.quit()
+        process.exit(0)
+      }
+    },
+    // {label: '设置', click: () => {
+    //   if (win) {
+    //     win.isMinimized() && win.restore()
+    //     win.show()
+    //   } else {
+    //     createWindow()
+    //   }
+    // }},
+    // {label: '关于', click: () => {
+    //   if (win) {
+    //     win.isMinimized() && win.restore()
+    //     win.show()
+    //   } else {
+    //     createWindow()
+    //   }
+    // }}
+  ])
+
+  tray.setToolTip('AI助手')
+  tray.setContextMenu(contextMenu)
+}
+
+app.whenReady()
+  .then(() => {
+    createTray()
+    createWindow()
+  })
 
 app.on('window-all-closed', () => {
   win = null
-  if (process.platform !== 'darwin') app.quit()
+  // 在 macOS 上，应用和它的菜单栏会一直存在，除非用户用 Cmd + Q 显式退出
+  // if (process.platform !== 'darwin') app.quit()
 })
 
 app.on('second-instance', () => {
