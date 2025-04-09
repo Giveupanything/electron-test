@@ -4,11 +4,13 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
 import { update } from './update'
+import { createFloatWindow } from './floatWindow'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-let tray: Tray | null = null
+
 const gotTheLock = app.requestSingleInstanceLock()  // 申请单实例锁
+let tray: Tray | null = null  // 托盘图标
 
 // The built directory structure
 //
@@ -25,6 +27,8 @@ process.env.APP_ROOT = path.join(__dirname, '../..')
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
+
+console.log('VITE_DEV_SERVER_URL------------>>>>', VITE_DEV_SERVER_URL)
 
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, 'public')
@@ -55,20 +59,17 @@ async function createWindow() {
       nodeIntegration: true, // 可以使用 node 模块
       // contextIsolation: false, // 关闭上下文隔离，允许在渲染进程中直接使用 Node.js API
       preload,
-      // openDevTools: false, // 是否打开开发者工具
+      devTools: false, // 是否打开开发者工具
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-      // nodeIntegration: true,
 
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
-      // contextIsolation: false,
     },
   })
 
   if (VITE_DEV_SERVER_URL) { // #298
     win.loadURL(VITE_DEV_SERVER_URL)
-    // Open devTool if the app is not packaged
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }
@@ -151,6 +152,7 @@ app.whenReady()
   .then(() => {
     createTray()
     createWindow()
+    // createFloatWindow()
   })
 
 app.on('window-all-closed', () => {

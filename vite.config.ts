@@ -27,6 +27,7 @@ export default defineConfig(({ command }) => {
           entry: 'electron/main/index.ts',
           onstart(args) {
             if (process.env.VSCODE_DEBUG) {
+              // 使用 VSCode Debug 时，使用 Electron 的 Debug 模式
               console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
             } else {
               args.startup()
@@ -64,6 +65,14 @@ export default defineConfig(({ command }) => {
         renderer: {},
       }),
     ],
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.join(__dirname, 'index.html'),
+          float: path.join(__dirname, 'float.html'),
+        },
+      },
+    },
     server: process.env.VSCODE_DEBUG && (() => {
       const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
       return {
