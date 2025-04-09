@@ -51,15 +51,21 @@ const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
+    width: 1280,
+    height: 800,
+    minWidth: 1080,
+    minHeight: 760,
+    autoHideMenuBar: true,
     // skipTaskbar: true,
     title: 'AI助手',
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    show: true, // 5.0后，可以解决 MacOS 窗口闪烁的问题
     // icon: path.join(process.env.VITE_PUBLIC, 'logo-32.png'),
     webPreferences: {
       nodeIntegration: true, // 可以使用 node 模块
       // contextIsolation: false, // 关闭上下文隔离，允许在渲染进程中直接使用 Node.js API
       preload,
-      devTools: false, // 是否打开开发者工具
+      devTools: true, // 是否打开开发者工具
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
 
       // Consider using contextBridge.exposeInMainWorld
@@ -68,6 +74,7 @@ async function createWindow() {
   })
 
   if (VITE_DEV_SERVER_URL) { // #298
+    console.log('VITE_DEV_SERVER_URL------------>>>>', VITE_DEV_SERVER_URL)
     win.loadURL(VITE_DEV_SERVER_URL)
     win.webContents.openDevTools()
   } else {

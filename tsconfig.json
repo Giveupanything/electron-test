@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true, // 允许导入 .ts 文件
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
@@ -15,13 +16,23 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    /* Linting */
+    "noUnusedLocals": true, // 未使用的变量
+    "noUnusedParameters": true, // 未使用的参数
+    "noFallthroughCasesInSwitch": true, // switch 语句中的 case 语句未包含 break、return 或 throw 等跳转语句
+    "types": ["vite-plugin-svgr/client"], // 添加对 SVGR 的类型支持
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
+      "@": ["src"],
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src", "electron"],
+  "include": [
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "electron"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

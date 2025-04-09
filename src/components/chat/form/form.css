@@ -1,0 +1,6 @@
+.custom-select .ant-select-selector {
+    background-color: rgb(243 244 246) !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0.5rem !important;
+}
