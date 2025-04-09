@@ -2,17 +2,17 @@
  * @Author: ming
  * @Date: 2025-03-14 17:47:52
  * @LastEditors: qilin
- * @LastEditTime: 2025-04-09 16:30:54
+ * @LastEditTime: 2025-04-09 19:07:08
  * @description: menus
  */
-import {  useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classnames from 'classnames';
 import { padQuery } from 'turboutils';
 import { message } from 'antd';
 
 import { useAppsContext } from '@/context/apps-context';
 // import MessageDotsCircle from './base/icon/MessageDotsCircle';
-import { RiMessage3Line, RiRobot3Line } from '@remixicon/react';
+import { RiMessage3Line, RiDatabase2Line } from '@remixicon/react';
 
 import s from './index.module.css';
 
@@ -26,18 +26,31 @@ export const menuList = [
   // }
 
   // 188
+  // {
+  //   title: '资金答疑',
+  //   icon: <RiMessage3Line className="w-[18px] h-[18px] mr-1" />,
+  //   path: '/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/chat',
+  //   apiKey: 'app-y5NGa9QclpKG9oezSa6ly9Ww'
+  // },
+  // {
+  //   title: '制度规范',
+  //   icon: <RiRobot3Line className="w-[18px] h-[18px] mr-1" />,
+  //   path: '/apps/5cd3c9fc-2bea-4044-b2fe-457457413393/chat',
+  //   apiKey: 'app-D6KsJIlbj5CynPDABCItEnWG'
+  // }
+
   {
-    title: '资金答疑',
+    title: '智能问答',
     icon: <RiMessage3Line className="w-[18px] h-[18px] mr-1" />,
     path: '/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/chat',
-    apiKey: 'app-y5NGa9QclpKG9oezSa6ly9Ww'
+    apiKey: 'app-111',
   },
   {
-    title: '制度规范',
-    icon: <RiRobot3Line className="w-[18px] h-[18px] mr-1" />,
-    path: '/apps/5cd3c9fc-2bea-4044-b2fe-457457413393/chat',
-    apiKey: 'app-D6KsJIlbj5CynPDABCItEnWG'
-  }
+    title: '知识库查询',
+    icon: <RiDatabase2Line className="w-[18px] h-[18px] mr-1" />,
+    path: '/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/search',
+    apiKey: 'app-222',
+  },
 
   // 生产
   // {
@@ -60,8 +73,9 @@ export default function Menu() {
 
   const { chatIsResponding } = useAppsContext();
 
-  const menuHandle = (item: typeof menuList[number]) => {
-    if(chatIsResponding) {
+  const menuHandle = (item: (typeof menuList)[number]) => {
+    console.log('item', item);
+    if (chatIsResponding && item.title === '智能问答') {
       message.warning('正在回复中，请稍后再试');
       return;
     }

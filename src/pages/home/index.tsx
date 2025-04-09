@@ -2,26 +2,23 @@
  * @Author: qilin
  * @Date: 2025-04-09 14:11:05
  * @LastEditors: qilin
- * @LastEditTime: 2025-04-09 17:39:27
+ * @LastEditTime: 2025-04-09 18:59:40
  * @description: 乘风破浪
  */
 
-import {  useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { padQuery } from 'turboutils';
 import { DatabaseOutlined, MessageOutlined } from '@ant-design/icons';
 export default function Home() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { pathname } = location;
   const handleGoKnowledgeSearch = () => {
     // 去知识库搜索页面
-    navigate('/apps');
+    navigate(padQuery('/apps', { type: 'knowledge-search' }));
   };
-  
+
   const handleGoIntelligentQA = () => {
     // 去智能问答页面
-    console.log('handleGoIntelligentQA');
-    navigate('/apps');
+    navigate(padQuery('/apps', { type: 'intelligent-qa' }));
   };
 
   return (
