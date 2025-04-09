@@ -1,31 +1,41 @@
 /*
  * @Author: dushuai
  * @Date: 2024-03-29 16:17:20
- * @LastEditors: dushuai
- * @LastEditTime: 2024-08-19 22:09:31
+ * @LastEditors: qilin
+ * @LastEditTime: 2025-04-09 18:45:41
  * @description: 路由表
  */
 import { ComponentType, lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { LoginAction, LoginLoader, LogoutAction, RootLoader } from '@/permission';
+import {
+  LoginAction,
+  LoginLoader,
+  LogoutAction,
+  RootLoader,
+} from '@/permission';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const BasicsLayout = lazy(() => import('@/layouts/basics'));
 const AppsLayout = lazy(() => import('@/layouts/apps-layout'));
+const Home = lazy(() => import('@/pages/home'));
 
 export type Module = {
-  [keys in string]: () => Promise<{ default: ComponentType<any>; }>
-}
+  [keys in string]: () => Promise<{ default: ComponentType<any> }>;
+};
 
 /** 所有pages下页面文件 */
-const pagesModules = import.meta.glob('@/pages/*/index.tsx') as unknown as Module;
+const pagesModules = import.meta.glob(
+  '@/pages/*/index.tsx'
+) as unknown as Module;
 /** 所有pages\*\router下嵌套页面文件 */
-const nestModules = import.meta.glob('@/pages/*/router/*/index.tsx') as unknown as Module;
+const nestModules = import.meta.glob(
+  '@/pages/*/router/*/index.tsx'
+) as unknown as Module;
 /** 所有页面文件 */
 export const modules: Module = {
   ...pagesModules,
-  ...nestModules
+  ...nestModules,
 };
 
 /**
@@ -37,36 +47,41 @@ const routes: RouteObject[] = [
     path: '/',
     Component: BasicsLayout,
     loader: RootLoader,
-    children: [] // ...dynamicRoutes
+    children: [], // ...dynamicRoutes
+  },
+  {
+    id: 'home',
+    path: '/home',
+    Component: Home,
   },
   {
     id: 'apps',
     path: '/apps',
     Component: AppsLayout,
-    children: [] // ...dynamicRoutes
+    children: [], // ...dynamicRoutes
   },
   {
     id: 'app',
     path: '/app',
     Component: AppsLayout,
-    children: [] // ...dynamicRoutes
+    children: [], // ...dynamicRoutes
   },
   {
     path: '/login',
     loader: LoginLoader,
     action: LoginAction,
-    Component: lazy(modules[getPath('login')])
+    Component: lazy(modules[getPath('login')]),
   },
   {
     // logout路由只用来退出登录，不展示页面
     path: '/logout',
     action: LogoutAction,
-    Component: lazy(modules[getPath('error')])
+    Component: lazy(modules[getPath('error')]),
   },
   {
     path: '*',
-    Component: lazy(modules[getPath('error')])
-  }
+    Component: lazy(modules[getPath('error')]),
+  },
 ];
 
 export default routes;
