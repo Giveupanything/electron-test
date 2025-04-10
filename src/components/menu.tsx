@@ -5,16 +5,16 @@
  * @LastEditTime: 2025-04-09 19:07:08
  * @description: menus
  */
-import { useLocation, useNavigate } from 'react-router-dom';
-import classnames from 'classnames';
-import { padQuery } from 'turboutils';
-import { message } from 'antd';
+import { useLocation, useNavigate } from "react-router-dom";
+import classnames from "classnames";
+import { padQuery } from "turboutils";
+import { message } from "antd";
 
-import { useAppsContext } from '@/context/apps-context';
+import { useAppsContext } from "@/context/apps-context";
 // import MessageDotsCircle from './base/icon/MessageDotsCircle';
-import { RiMessage3Line, RiDatabase2Line } from '@remixicon/react';
+import { RiMessage3Line, RiDatabase2Line } from "@remixicon/react";
 
-import s from './index.module.css';
+import s from "./index.module.css";
 
 export const menuList = [
   // dify
@@ -40,16 +40,16 @@ export const menuList = [
   // }
 
   {
-    title: '智能问答',
+    title: "智能问答",
     icon: <RiMessage3Line className="w-[18px] h-[18px] mr-1" />,
-    path: '/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/chat',
-    apiKey: 'app-111',
+    path: "/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/chat",
+    apiKey: "app-111",
   },
   {
-    title: '知识库查询',
+    title: "知识库查询",
     icon: <RiDatabase2Line className="w-[18px] h-[18px] mr-1" />,
-    path: '/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/search',
-    apiKey: 'app-222',
+    path: "/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/search",
+    apiKey: "app-222",
   },
 
   // 生产
@@ -74,9 +74,9 @@ export default function Menu() {
   const { chatIsResponding } = useAppsContext();
 
   const menuHandle = (item: (typeof menuList)[number]) => {
-    console.log('item', item);
-    if (chatIsResponding && item.title === '智能问答') {
-      message.warning('正在回复中，请稍后再试');
+    console.log("item", item);
+    if (chatIsResponding && item.title === "智能问答") {
+      message.warning("正在回复中，请稍后再试");
       return;
     }
     navigate(padQuery(item.path, { APIKEY: item.apiKey }));
@@ -89,8 +89,8 @@ export default function Menu() {
           <li
             key={item.title}
             className={classnames(
-              'group flex items-center pl-2 hover:bg-[#edf2fe] rounded cursor-pointer mb-[12px] w-[100px] h-[32px] hover:text-[#285be3]',
-              { 'bg-[#edf2fe] text-[#285be3]': pathname === item.path }
+              "group flex items-center pl-2 hover:bg-[#edf2fe] rounded cursor-pointer mb-[12px] w-[100px] h-[32px] hover:text-[#285be3]",
+              { "bg-[#edf2fe] text-[#285be3]": pathname === item.path }
             )}
             onClick={() => menuHandle(item)}
           >

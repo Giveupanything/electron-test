@@ -6,7 +6,7 @@
  * @description: 动态路由相关
  */
 
-import { APP_BULID_TYPE } from '@/config';
+import { APP_BULID_TYPE } from "@/config";
 
 /**
  * 动态配置路由 ------ 这里是前端自己的动态路由
@@ -37,79 +37,89 @@ export const desktopRoutes: Route.Route[] = [
   //   protected: false
   // },
   {
-    id: 'Chat',
-    path: '/:appId/chat',
-    parent: '/apps',
-    component: 'apps/router/chat',
+    id: "Chat",
+    path: "/:appId/chat",
+    parent: "/apps",
+    component: "apps/router/chat",
     handle: {
-      title: '聊天助手'
+      title: "聊天助手",
     },
-    protected: false
-  }
+    protected: false,
+  },
+  {
+    id: "Search",
+    path: "/:appId/search",
+    parent: "/apps",
+    component: "apps/router/search",
+    handle: {
+      title: "知识库查询",
+    },
+    protected: false,
+  },
 ];
 
 /** pc端路由 */
 export const pcRoutes: Route.Route[] = [
   {
-    id: 'App',
+    id: "App",
     index: true,
-    parent: '/app',
-    component: 'app',
+    parent: "/app",
+    component: "app",
     handle: {
-      title: '首页'
+      title: "首页",
     },
-    protected: false
+    protected: false,
   },
   {
-    id: 'Chat',
-    path: '/:appId/chat',
-    parent: '/app',
-    component: 'app/router/chat',
+    id: "Chat",
+    path: "/:appId/chat",
+    parent: "/app",
+    component: "app/router/chat",
     handle: {
-      title: '聊天助手'
+      title: "聊天助手",
     },
-    protected: false
+    protected: false,
   },
   {
-    id: 'Agent',
-    path: '/:appId/agent',
-    parent: '/app',
-    component: 'app/router/agent',
+    id: "Agent",
+    path: "/:appId/agent",
+    parent: "/app",
+    component: "app/router/agent",
     handle: {
-      title: 'Agent'
+      title: "Agent",
     },
-    protected: false
+    protected: false,
   },
   {
-    id: 'ChatFlow',
-    path: '/:appId/chat-flow',
-    parent: '/app',
-    component: 'app/router/chat-flow',
+    id: "ChatFlow",
+    path: "/:appId/chat-flow",
+    parent: "/app",
+    component: "app/router/chat-flow",
     handle: {
-      title: 'chat-flow'
+      title: "chat-flow",
     },
-    protected: false
+    protected: false,
   },
   {
-    id: 'Text',
-    path: '/:appId/text',
-    component: 'app/router/text',
-    parent: '/app',
+    id: "Text",
+    path: "/:appId/text",
+    component: "app/router/text",
+    parent: "/app",
     handle: {
-      title: '文本生成'
+      title: "文本生成",
     },
-    protected: false
+    protected: false,
   },
   {
-    id: 'Workflow',
-    path: '/:appId/workflow',
-    component: 'app/router/workflow',
-    parent: '/app',
+    id: "Workflow",
+    path: "/:appId/workflow",
+    component: "app/router/workflow",
+    parent: "/app",
     handle: {
-      title: '工作流'
+      title: "工作流",
     },
-    protected: false
-  }
+    protected: false,
+  },
 ];
 
 export const dynamicRoutes: Route.Route[] = [
@@ -124,7 +134,7 @@ export const dynamicRoutes: Route.Route[] = [
   // },
 ];
 
-if(APP_BULID_TYPE === 'desktop') {
+if (APP_BULID_TYPE === "desktop") {
   dynamicRoutes.push(...desktopRoutes);
 } else {
   dynamicRoutes.push(...pcRoutes);
