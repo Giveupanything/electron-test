@@ -5,23 +5,28 @@
  * @LastEditTime: 2024-08-08 21:17:06
  * @description: axios
  */
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import qs from 'qs';
-import { message } from 'antd';
+import axios, {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
+import qs from "qs";
+import { message } from "antd";
 
-import { cancelRequest } from './requestCancel';
+import { cancelRequest } from "./requestCancel";
 // import ErrorCodeHandle from './requestCode';
 // import { useAppStore } from '@/store';
-import { API_URL, DIFY_API_URL } from '@/config';
-import { isString } from 'turboutils';
+import { API_URL, DIFY_API_URL } from "@/config";
+import { isString } from "turboutils";
 
 /** 不需要处理异常白名单 */
-const whiteList: string[] = ['/qiniu/upload/uptoken'];
+const whiteList: string[] = ["/qiniu/upload/uptoken"];
 
 // axios基础配置
 const service = axios.create({
   timeout: 20000,
-  baseURL: API_URL
+  baseURL: API_URL,
 });
 
 // 请求拦截
@@ -35,18 +40,20 @@ service.interceptors.request.use(
     // }
     // console.log('请求拦截 config:>> ', config);
 
-    const isData = ['delete', 'post'].includes(config.method || '');
+    const isData = ["delete", "post"].includes(config.method || "");
 
-    if(config.params?.isDify !== false) config.baseURL = DIFY_API_URL;
+    if (config.params?.isDify !== false) config.baseURL = DIFY_API_URL;
 
     const paramsobj = isData ? config.data : config.params;
-    const { apiKey, ...params } = isString(paramsobj) ? qs.parse(paramsobj) : paramsobj;
+    const { apiKey, ...params } = isString(paramsobj)
+      ? qs.parse(paramsobj)
+      : paramsobj;
 
     // console.log('请求拦截 params:>> ', paramsobj, params, apiKey);
 
     Object.assign(config.headers, getDifyHeader(apiKey));
 
-    isData ? config.data = params : config.params = params;
+    isData ? (config.data = params) : (config.params = params);
 
     cancelRequest.addPending(config); // 添加当前请求至请求列表
 
@@ -68,8 +75,8 @@ service.interceptors.response.use(
     /**
      * 处理错误响应
      */
-    if(whiteList.some(e => e.match(url))) {
-      console.log('接口通过白名单，不需要异常处理url:>> ', url);
+    if (whiteList.some((e) => e.match(url))) {
+      console.log("接口通过白名单，不需要异常处理url:>> ", url);
     } else {
       // ErrorCodeHandle(response);
     }
@@ -88,12 +95,12 @@ service.interceptors.response.use(
      * 将取消请求的错误捕获
      * 根据需要设置 因为需要对每个请求单独处理catch 所以隐藏取消请求的错误返回
      */
-    console.error('响应异常:>> ', err);
+    console.error("响应异常:>> ", err);
 
-    if(err.code === 'ERR_CANCELED') {
-      console.log('请求取消url:>> ', err.config?.url);
-    } else if(err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
-      message.error('请求超时,请检查服务器状态');
+    if (err.code === "ERR_CANCELED") {
+      console.log("请求取消url:>> ", err.config?.url);
+    } else if (err.code === "ECONNABORTED" && err.message.includes("timeout")) {
+      message.error("请求超时,请检查服务器状态");
       return Promise.reject(err);
     } else {
       // message.error(err.message);
@@ -104,15 +111,18 @@ service.interceptors.response.use(
 
 /**
  * 基础的请求
-*/
+ */
 /** POST表单格式 */
-export function postForm<T = any>(url: string, params?: object): Promise<Res.ResponseRes<T>> {
+export function postForm<T = any>(
+  url: string,
+  params?: object
+): Promise<Res.ResponseRes<T>> {
   return new Promise<Res.ResponseRes<T>>((resolve, reject) => {
     service
       .post(url, qs.stringify(params), {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        }
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
       })
       .then(
         (response: AxiosResponse<Res.ResponseRes<T>>) => {
@@ -129,7 +139,10 @@ export function postForm<T = any>(url: string, params?: object): Promise<Res.Res
 }
 
 /** POST JSON格式 */
-export function post<T = any>(url: string, params?: object): Promise<Res.ResponseRes<T>> {
+export function post<T = any>(
+  url: string,
+  params?: object
+): Promise<Res.ResponseRes<T>> {
   return new Promise<Res.ResponseRes<T>>((resolve, reject) => {
     service
       .post(url, params)
@@ -148,12 +161,16 @@ export function post<T = any>(url: string, params?: object): Promise<Res.Respons
 }
 
 /** GET请求 */
-export function get<T = any>(url: string, params?: object): Promise<Res.ResponseRes<T>> {
-  return new Promise<Res.ResponseRes<T>>((resolve, reject) => {
+export function get<T = any>(
+  url: string,
+  params?: object,
+  config?: Omit<AxiosRequestConfig<any>, "params">
+): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
     service
-      .get(url, { params })
+      .get(url, { params, ...config })
       .then(
-        (response: AxiosResponse<Res.ResponseRes<T>>) => {
+        (response: AxiosResponse<T>) => {
           response && resolve(response.data);
         },
         (err: AxiosError) => {
@@ -169,7 +186,10 @@ export function get<T = any>(url: string, params?: object): Promise<Res.Response
 /**
  * PUT请求
  */
-export function put<T = any>(url: string, params?: object): Promise<Res.ResponseRes<T>> {
+export function put<T = any>(
+  url: string,
+  params?: object
+): Promise<Res.ResponseRes<T>> {
   return new Promise<Res.ResponseRes<T>>((resolve, reject) => {
     service
       .put(url, params)
@@ -190,14 +210,18 @@ export function put<T = any>(url: string, params?: object): Promise<Res.Response
 /**
  * DELETE请求
  */
-export function del<T = any>(url: string, params: object = {}, headers: object = {}): Promise<Res.ResponseRes<T>> {
+export function del<T = any>(
+  url: string,
+  params: object = {},
+  headers: object = {}
+): Promise<Res.ResponseRes<T>> {
   return new Promise<Res.ResponseRes<T>>((resolve, reject) => {
     service
       .delete(url, {
         data: params,
         headers: {
-          ...headers
-        }
+          ...headers,
+        },
       })
       .then(
         (response: AxiosResponse<Res.ResponseRes<T>>) => {
@@ -214,9 +238,9 @@ export function del<T = any>(url: string, params: object = {}, headers: object =
 }
 
 function getDifyHeader(apiKey: string) {
-  if(!apiKey) return {};
+  if (!apiKey) return {};
 
   return {
-    'Authorization': `Bearer ${apiKey}`
+    Authorization: `Bearer ${apiKey}`,
   };
 }
