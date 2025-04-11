@@ -6,19 +6,20 @@
  * @description: 乘风破浪
  */
 
-import { useNavigate } from 'react-router-dom';
-import { padQuery } from 'turboutils';
-import { DatabaseOutlined, MessageOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
+import { padQuery } from "turboutils";
+import { DatabaseOutlined, MessageOutlined } from "@ant-design/icons";
+import { menuList } from "@/components/menu";
 export default function Home() {
   const navigate = useNavigate();
   const handleGoKnowledgeSearch = () => {
     // 去知识库搜索页面
-    navigate(padQuery('/apps', { type: 'knowledge-search' }));
+    navigate(padQuery(menuList[0].path, { APIKEY: menuList[1].apiKey }));
   };
 
   const handleGoIntelligentQA = () => {
     // 去智能问答页面
-    navigate(padQuery('/apps', { type: 'intelligent-qa' }));
+    navigate(padQuery(menuList[1].path, { APIKEY: menuList[0].apiKey }));
   };
 
   return (
@@ -30,7 +31,7 @@ export default function Home() {
       >
         <div className="flex items-center mb-4">
           <div className="w-10 h-10 bg-white rounded-full flex justify-center items-center mr-4">
-            <DatabaseOutlined style={{ fontSize: '24px', color: '#000' }} />
+            <DatabaseOutlined style={{ fontSize: "24px", color: "#000" }} />
           </div>
           <div className="flex flex-col">
             <h2 className="text-lg font-semibold">知识库查询</h2>
@@ -49,7 +50,7 @@ export default function Home() {
       >
         <div className="flex items-center mb-4">
           <div className="w-10 h-10 bg-white rounded-full flex justify-center items-center mr-4">
-            <MessageOutlined style={{ fontSize: '24px', color: '#000' }} />
+            <MessageOutlined style={{ fontSize: "24px", color: "#000" }} />
           </div>
           <div className="flex flex-col">
             <h2 className="text-lg font-semibold">智能问答</h2>

@@ -40,16 +40,16 @@ export const menuList = [
   // }
 
   {
-    title: "智能问答",
-    icon: <RiMessage3Line className="w-[18px] h-[18px] mr-1" />,
-    path: "/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/chat",
-    apiKey: "app-111",
-  },
-  {
     title: "知识库查询",
     icon: <RiDatabase2Line className="w-[18px] h-[18px] mr-1" />,
-    path: "/apps/1eba75ef-552a-4fb8-94ab-d08a4824370e/search",
-    apiKey: "app-222",
+    path: "/apps/6978428a-b7cf-43df-bfd5-9488281aeb38/search",
+    apiKey: "app-Ed22eL7VQGn6hfHuxL2dJ2U8",
+  },
+  {
+    title: "智能问答",
+    icon: <RiMessage3Line className="w-[18px] h-[18px] mr-1" />,
+    path: "/apps/6978428a-b7cf-43df-bfd5-9488281aeb38/chat",
+    apiKey: "app-Ed22eL7VQGn6hfHuxL2dJ2U8",
   },
 
   // 生产
