@@ -39,7 +39,7 @@
     "@iconify-icon/react": "^2.1.0",
     "@monaco-editor/react": "^4.6.0",
     "@playwright/test": "^1.48.2",
-    "@remixicon/react": "4.5.0",
+    "@remixicon/react": "4.6.0",
     "@tailwindcss/typography": "^0.5.16",
     "@turbotools/react": "^1.0.1",
     "@types/js-cookie": "^3.0.6",
